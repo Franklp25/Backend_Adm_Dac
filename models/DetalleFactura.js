@@ -21,6 +21,10 @@ const detalleFacturaSchema = mongoose.Schema({
         trim: true,
         required: true,
     },
+    factura: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Factura",
+    }
     
 
 },{

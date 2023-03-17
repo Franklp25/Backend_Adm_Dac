@@ -22,13 +22,7 @@ const facturaSchema = mongoose.Schema({
     cliente: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Cliente",
-    },
-    productos:[
-        {
-            type:mongoose.Types.ObjectId,
-            ref: 'detalleFactura',
-        }
-    ]
+    }
     
 },{
     timestamps: true,
