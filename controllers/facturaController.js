@@ -9,16 +9,24 @@ const obtenerFacturas = async (req,res)=>{
 
 const nuevaFactura = async (req,res)=>{
 
-}
+};
 
 const obtenerFactura = async (req,res)=>{
 
-}
+};
 
 const editarFactura = async (req,res)=>{
 
-}
+};
 
 const eliminarFactura = async (req,res)=>{
 
+};
+
+export {
+    obtenerFactura,
+    obtenerFacturas,
+    nuevaFactura,
+    editarFactura,
+    eliminarFactura,
 }
