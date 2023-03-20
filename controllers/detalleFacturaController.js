@@ -15,13 +15,11 @@ const agregarDetalle= async (req,res)=> {
 
     }
 
-    if(existProyecto.creador.toString() !== req.usuario._id.toString()){
-        const error= new Error("No tiene los permisos para añadir detalles a la factura");
-        return res.status(404).json({msg:error.message})
-    }
-
     try {
-        const detalleAlmacenado= await Factura.create(req.body);
+        subTotalaux=(req.cantidad*req.precioUnitario)-descuento
+        factura.subtotal=factura.subtotal+subTotalaux;
+        factura.save();
+        const detalleAlmacenado= await DetalleFactura.create(req.body);
         res.json(detalleAlmacenado);
     } catch(error){
         console.log(error)

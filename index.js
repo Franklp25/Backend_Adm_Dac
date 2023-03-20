@@ -7,6 +7,7 @@ import usuarioRoutes from "./routes/usuarioRoutes.js";
 import clienteRoutes from "./routes/ClienteRoutes.js";
 import proveedorRoutes from "./routes/proveedorRoutes.js";
 import DetalleFactura from "./routes/detalleFacturaRoutes.js";
+import Factura from "./routes/facturaRoutes.js";
 
 const app = express();
 app.use(express.json());
@@ -37,6 +38,7 @@ app.use("/api/usuarios", usuarioRoutes); //USE responde a todos los verbos http 
 app.use("/api/clientes", clienteRoutes);
 app.use("/api/proveedor", proveedorRoutes);
 app.use("/api/detalle_factura",DetalleFactura);
+app.use("/api/facturas",Factura);
 //------------------------------------------------------------------------------------------------
 
 const PORT = process.env.PORT || 4000; // variable de entorno para el puerto, si no existe que le asigne el puerto 4000
