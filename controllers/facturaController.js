@@ -20,18 +20,17 @@ const nuevaFactura = async (req, res) => {
 
 const obtenerFactura = async (req, res) => {
   const { id } = req.params;
-  let factura;
+  let factura,detallesFactura;
 
   try {
     factura = await Factura.findById(id);
+    detallesFactura = await DetalleFactura.find().where("factura").equals(factura._id);
   } catch (e) {
     const error = new Error("ID de factura inválido");
     return res.status(404).json({ msg: error.message });
   }
 
-  const detallesFactura = await DetalleFactura.find()
-    .where("factura")
-    .equals(factura._id);
+  
   res.json({
     factura,
     detallesFactura,
