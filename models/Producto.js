@@ -2,6 +2,11 @@ import mongoose from "mongoose";
 
 const productSchema = new mongoose.Schema(
   {
+    codigo: {
+      type: String,
+      required: true,
+      default: "NA",
+    },
     nombre: {
       type: String,
       required: true,
@@ -14,7 +19,7 @@ const productSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    categoría: {
+    categoria: {
       type: String,
       required: true,
     },
@@ -28,4 +33,4 @@ const productSchema = new mongoose.Schema(
 const Producto = mongoose.model("Productos", productSchema);
 
 // Exportación del modelo
-module.exports = Producto;
+export default Producto;

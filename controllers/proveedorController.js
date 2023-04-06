@@ -71,7 +71,7 @@ const eliminarProveedor = async (req, res) => {
     let proveedor;
 
     try {
-        cliproveedornte = await Proveedor.findById(id);
+        proveedor = await Proveedor.findById(id);
     } catch (e) {
         const error = new Error("ID de proveedor inválido");
         return res.status(404).json({ msg: error.message });
