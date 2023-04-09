@@ -3,7 +3,10 @@ import Proveedor from "../models/Proveedor.js";
 const nuevoProveedor = async (req, res) => {
     const proveedor = new Proveedor(req.body);
 
-    if (Proveedor.find({ cedula: proveedor.cedula })) {
+    const { cedula } = req.body; //extraemos cedula.
+    const existeProveedor = await Proveedor.findOne({ cedula });
+
+    if (existeProveedor) {
         const error = new Error("Proveedor ya registrado");
         return res.status(400).json({ msg: error.message });
     }

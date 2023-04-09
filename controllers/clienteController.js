@@ -3,7 +3,11 @@ import Cliente from "../models/Cliente.js";
 const nuevoCliente = async (req, res) => {
     const cliente = new Cliente(req.body);
 
-    if (Cliente.find({ cedula: cliente.cedula })) {
+    const { cedula } = req.body; //extraemos cedula.
+    const existeCliente = await Cliente.findOne({ cedula });
+
+
+    if (existeCliente) {
         const error = new Error("Cliente ya registrado");
         return res.status(400).json({ msg: error.message });
     }
