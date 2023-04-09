@@ -3,11 +3,17 @@ import Proveedor from "../models/Proveedor.js";
 const nuevoProveedor = async (req, res) => {
     const proveedor = new Proveedor(req.body);
 
+    if (Proveedor.find({ cedula: proveedor.cedula })) {
+        const error = new Error("Proveedor ya registrado");
+        return res.status(400).json({ msg: error.message });
+    }
+
     try {
         const proveedorAlmacenado = await proveedor.save();
         res.json(proveedorAlmacenado);
-    } catch (error) {
-        console.log(error);
+    } catch (e) {
+        const error = new Error("Hubo un error inesperado al crear el proveedor");//Mensaje de error
+        res.status(500).json({msg: error.message})
     }
 };
 
