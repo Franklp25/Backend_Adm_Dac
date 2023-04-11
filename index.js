@@ -6,6 +6,9 @@ import connectDB from "./config/db.js";
 import usuarioRoutes from "./routes/usuarioRoutes.js";
 import clienteRoutes from "./routes/ClienteRoutes.js";
 import proveedorRoutes from "./routes/proveedorRoutes.js";
+import DetalleFactura from "./routes/detalleFacturaRoutes.js";
+import Factura from "./routes/facturaRoutes.js";
+import Producto from "./routes/productoRoutes.js";
 
 const app = express();
 app.use(express.json());
@@ -35,6 +38,9 @@ app.use(cors(corsOptions));
 app.use("/api/usuarios", usuarioRoutes); //USE responde a todos los verbos http // req = Datos enviados y res= resppuesta que se obtiene
 app.use("/api/clientes", clienteRoutes);
 app.use("/api/proveedor", proveedorRoutes);
+app.use("/api/detalle_factura",DetalleFactura);
+app.use("/api/facturas",Factura);
+app.use("/api/productos",Producto);
 
 //------------------------------------------------------------------------------------------------
 
