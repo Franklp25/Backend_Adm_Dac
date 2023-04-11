@@ -2,9 +2,8 @@ import mongoose from 'mongoose'
 
 const detalleFacturaSchema = mongoose.Schema({
     producto:{
-        type:String,
-        trim: true,
-        required: true,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Producto",
     },
     precioUnitario: {
         type:Number,

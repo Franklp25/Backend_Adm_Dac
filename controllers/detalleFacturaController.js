@@ -1,18 +1,24 @@
 import Factura from "../models/Factura.js";
 import DetalleFactura from "../models/DetalleFactura.js";
+import Producto from "../models/Producto.js";
 
 const agregarDetalle= async (req,res)=> {
-    let {factura}= req.body;
+    let {factura,precioUnitario,producto}= req.body;
 
-    let existeFactura
+    let existeFactura,existeProducto;
 
     try{
         existeFactura= await Factura.findById(factura);
+        existeProducto= await Producto.findById(producto);
 
     } catch(e) {
         const error= new Error("La factura no existe");
         return res.status(404).json({msg: error.message});
 
+    }
+
+    if(!precioUnitario || precioUnitario<=0){
+        req.body.precioUnitario=existeProducto.precio;
     }
 
     try {
@@ -23,7 +29,7 @@ const agregarDetalle= async (req,res)=> {
         const detalleAlmacenado= await DetalleFactura.create(req.body);
         res.json(detalleAlmacenado);
     } catch(error){
-        console.log(error)
+        console.log(error);
     }
 
 };

@@ -3,11 +3,21 @@ import Cliente from "../models/Cliente.js";
 const nuevoCliente = async (req, res) => {
     const cliente = new Cliente(req.body);
 
+    const { cedula } = req.body; //extraemos cedula.
+    const existeCliente = await Cliente.findOne({ cedula });
+
+
+    if (existeCliente) {
+        const error = new Error("Cliente ya registrado");
+        return res.status(400).json({ msg: error.message });
+    }
     try {
         const clienteAlmacenado = await cliente.save();
-        res.json(clienteAlmacenado);
-    } catch (error) {
-        console.log(error);
+        res.json({msg:'Se ha almacenado el cliente correctamente'});
+    } catch (e) {
+        //console.log(error);
+        const error = new Error("Hubo un error inesperado al crear el cliente");//Mensaje de error
+        res.status(500).json({msg: error.message})
     }
 };
 

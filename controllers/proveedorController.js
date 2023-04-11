@@ -3,11 +3,20 @@ import Proveedor from "../models/Proveedor.js";
 const nuevoProveedor = async (req, res) => {
     const proveedor = new Proveedor(req.body);
 
+    const { cedula } = req.body; //extraemos cedula.
+    const existeProveedor = await Proveedor.findOne({ cedula });
+
+    if (existeProveedor) {
+        const error = new Error("Proveedor ya registrado");
+        return res.status(400).json({ msg: error.message });
+    }
+
     try {
         const proveedorAlmacenado = await proveedor.save();
         res.json(proveedorAlmacenado);
-    } catch (error) {
-        console.log(error);
+    } catch (e) {
+        const error = new Error("Hubo un error inesperado al crear el proveedor");//Mensaje de error
+        res.status(500).json({msg: error.message})
     }
 };
 
@@ -71,7 +80,7 @@ const eliminarProveedor = async (req, res) => {
     let proveedor;
 
     try {
-        cliproveedornte = await Proveedor.findById(id);
+        proveedor = await Proveedor.findById(id);
     } catch (e) {
         const error = new Error("ID de proveedor inválido");
         return res.status(404).json({ msg: error.message });
