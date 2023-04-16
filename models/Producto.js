@@ -4,7 +4,6 @@ const productSchema = new mongoose.Schema(
   {
     codigo: {
       type: String,
-      required: true,
       default: "NA",
     },
     nombre: {
