@@ -6,6 +6,7 @@ import {
   nuevaFactura,
   editarFactura,
   eliminarFactura,
+  obtenerFacturasCliente,
 } from "../controllers/facturaController.js";
 
 import checkAuth from "../middleware/checkAuth.js";
@@ -19,5 +20,7 @@ router
   .get(obtenerFactura)
   .put(editarFactura)
   .delete(eliminarFactura);
+
+router.route("/cliente/:id").get(obtenerFacturasCliente);
 
 export default router;
