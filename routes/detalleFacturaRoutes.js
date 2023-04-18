@@ -11,12 +11,12 @@ import checkAuth from "../middleware/checkAuth.js";
 
 const router = express.Router();
 
-router.post("/",checkAuth,agregarDetalle)
+router.post("/",agregarDetalle)
 
 router
 .route("/:id")
-.get(checkAuth,obtenerDetalle)
-.put(checkAuth,actualizarDetalle)
-.delete(checkAuth,eliminarDetalle);
+.get(obtenerDetalle)
+.put(actualizarDetalle)
+.delete(eliminarDetalle);
 
 export default router;
