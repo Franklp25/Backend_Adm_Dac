@@ -7,6 +7,10 @@ const facturaSchema = mongoose.Schema(
             required: true,
             default: Date.now,
         },
+        diasCredito: {
+            type: Number,
+            required: true,
+        },
         fechaVencimiento: {
             type: Date,
             required: true,

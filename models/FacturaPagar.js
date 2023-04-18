@@ -19,6 +19,11 @@ const facturaPagarSchema = mongoose.Schema(
             type: Number,
             required: true,
         },
+        total: {
+            type: Number,
+            required: true,
+            default: 0,
+        },
         fechaVencimiento: {
             type: Date,
             required: true,
