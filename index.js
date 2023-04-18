@@ -33,7 +33,7 @@ const corsOptions = {
         }
     },
 };
-//app.use(cors(corsOptions));
+app.use(cors(corsOptions));
 
 //Routing----------------------------------------------------------------------------------------
 app.use("/api/usuarios", usuarioRoutes); //USE responde a todos los verbos http // req = Datos enviados y res= resppuesta que se obtiene
