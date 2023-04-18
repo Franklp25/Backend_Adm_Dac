@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
 
-const pagosSchema = mongoose.Schema(
+const facturaPagarSchema = mongoose.Schema(
     {
-        numFactura: {
+        numFacturaPagar: {
             type: Number,
             required: true,
         },
@@ -36,5 +36,5 @@ const pagosSchema = mongoose.Schema(
     }
 );
 
-const Pagos = mongoose.model("Pagos", pagosSchema);
-export default Pagos;
+const FacturaPagar = mongoose.model("FacturaPagar", facturaPagarSchema);
+export default FacturaPagar;
