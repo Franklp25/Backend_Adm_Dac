@@ -13,7 +13,7 @@ const facturaSchema = mongoose.Schema(
         },
         fechaVencimiento: {
             type: Date,
-            required: true,
+            required: false,
             //default:Date.now,
         },
         iva: {
