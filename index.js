@@ -9,6 +9,7 @@ import proveedorRoutes from "./routes/proveedorRoutes.js";
 import DetalleFactura from "./routes/detalleFacturaRoutes.js";
 import Factura from "./routes/facturaRoutes.js";
 import Producto from "./routes/productoRoutes.js";
+import FacturaPagar from "./routes/facturaPagarRoutes.js";
 
 const app = express();
 app.use(express.json());
@@ -42,6 +43,7 @@ app.use("/api/proveedor", proveedorRoutes);
 app.use("/api/detalle_factura",DetalleFactura);
 app.use("/api/facturas",Factura);
 app.use("/api/productos",Producto);
+app.use("/api/facturas-pagar",FacturaPagar);
 
 //------------------------------------------------------------------------------------------------
 
