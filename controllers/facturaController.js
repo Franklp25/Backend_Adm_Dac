@@ -42,7 +42,7 @@ const obtenerFacturasCliente = async (req, res) => {
     const { id } = req.params;
     let facturas;
     try {
-        facturas = await Factura.find({cliente:id})
+        facturas = await Factura.find({ cliente: id });
     } catch (e) {
         const error = new Error("ID de Cliente inválido");
         return res.status(404).json({ msg: error.message });
@@ -68,9 +68,11 @@ const editarFactura = async (req, res) => {
     factura.fechaEmision = req.body.fechaEmision || factura.fechaEmision;
     factura.fechaVencimiento =
         req.body.fechaVencimiento || factura.fechaVencimiento;
-    factura.estado = req.body.estado || factura.estado;
     factura.fechaEmision = req.body.fechaEmision || factura.fechaEmision;
 
+    if(req.body.estado!=null){
+        factura.estado = req.body.estado;
+    }
     try {
         const facturaAlmacenada = await factura.save();
         res.json(facturaAlmacenada);
