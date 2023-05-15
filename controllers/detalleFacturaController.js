@@ -17,20 +17,30 @@ const agregarDetalle= async (req,res)=> {
 
     }
 
+    console.log(existeFactura);
     if(!precioUnitario || precioUnitario<=0){
         req.body.precioUnitario=existeProducto.precio;
     }
 
-    try {
-        const subTotalAux=(req.body.cantidad*req.body.precioUnitario)-req.body.descuento;
-        existeFactura.subtotal=existeFactura.subtotal+subTotalAux;
-        existeFactura.iva= existeFactura.subtotal*0.13
-        existeFactura.save();
-        const detalleAlmacenado= await DetalleFactura.create(req.body);
-        res.json(detalleAlmacenado);
-    } catch(error){
-        console.log(error);
+    if(existeFactura!=null){
+        try {
+            //recordar realizar la resta del descuento en el futuro
+            const subTotalAux=(req.body.cantidad*req.body.precioUnitario);
+            existeFactura.subtotal=existeFactura.subtotal+subTotalAux;
+            existeFactura.iva= existeFactura.subtotal*0.13
+            console.log(existeFactura);
+            existeFactura.save();
+            const detalleAlmacenado= await DetalleFactura.create(req.body);
+            res.json(detalleAlmacenado);
+        } catch(error){
+            console.log(error);
+        }
+    }else{
+        const error= new Error("La factura no existe");
+        return res.status(404).json({msg: error.message});
     }
+
+    
 
 };
 
