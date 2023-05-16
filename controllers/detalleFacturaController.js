@@ -25,12 +25,7 @@ const agregarDetalle= async (req,res)=> {
     if(existeFactura!=null){
         try {
             //recordar realizar la resta del descuento en el futuro
-            const subTotalAux=0;
-            if(req.body.tarifa){
-                subTotalAux=((req.body.cantidad*req.body.precioUnitario)+((req.body.cantidad*req.body.precioUnitario)*(req.body.tarifa/100)));
-            }else{
-                subTotalAux=(req.body.cantidad*req.body.precioUnitario);
-            }
+            const subTotalAux=(req.body.cantidad*req.body.precioUnitario);
             
             existeFactura.subtotal=existeFactura.subtotal+subTotalAux;
             if(req.body.tarifa){
