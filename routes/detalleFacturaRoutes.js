@@ -5,9 +5,11 @@ import {
     obtenerDetalle,
     actualizarDetalle,
     eliminarDetalle,
+    obtenerEstadisticas,
 } from "../controllers/detalleFacturaController.js";
 
 import checkAuth from "../middleware/checkAuth.js";
+import DetalleFactura from "../models/DetalleFactura.js";
 
 const router = express.Router();
 
@@ -18,5 +20,9 @@ router
 .get(obtenerDetalle)
 .put(actualizarDetalle)
 .delete(eliminarDetalle);
+
+router 
+.route("/")
+.get(obtenerEstadisticas)
 
 export default router;
