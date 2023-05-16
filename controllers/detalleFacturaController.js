@@ -128,10 +128,27 @@ const eliminarDetalle= async (req,res)=>{
     }
 };
 
+const obtenerEstadisticas = async (req, res) => {
+    try {
+        const estadisticas = await DetalleFactura.aggregate([
+            { $group: { _id: "$producto", ventas: { $sum: "$cantidad" } } },
+            { $lookup: { from: "productos", localField: "_id", foreignField: "_id", as: "producto" } },
+            { $unwind: "$producto" },
+            { $project: { nombre: "$producto.nombre", ventas: 1, _id: 0 } }
+        ]);
+
+        res.json(estadisticas);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Hubo un error al obtener las estadísticas de ventas.");
+    }
+};
+
 
 export{
     agregarDetalle,
     obtenerDetalle,
     actualizarDetalle,
     eliminarDetalle,
+    obtenerEstadisticas
 }
