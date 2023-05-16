@@ -25,9 +25,20 @@ const agregarDetalle= async (req,res)=> {
     if(existeFactura!=null){
         try {
             //recordar realizar la resta del descuento en el futuro
-            const subTotalAux=(req.body.cantidad*req.body.precioUnitario);
+            const subTotalAux=0;
+            if(req.body.tarifa){
+                subTotalAux=((req.body.cantidad*req.body.precioUnitario)+((req.body.cantidad*req.body.precioUnitario)*(req.body.tarifa/100)));
+            }else{
+                subTotalAux=(req.body.cantidad*req.body.precioUnitario);
+            }
+            
             existeFactura.subtotal=existeFactura.subtotal+subTotalAux;
-            existeFactura.iva= existeFactura.subtotal*0.13
+            if(req.body.tarifa){
+                existeFactura.iva= (req.body.cantidad*req.body.precioUnitario)*(req.body.tarifa/100)
+            }else{
+                existeFactura.iva= existeFactura.iva+existeFactura.subtotal*0.13
+            }
+            
             console.log(existeFactura);
             existeFactura.save();
             const detalleAlmacenado= await DetalleFactura.create(req.body);
@@ -116,8 +127,9 @@ const eliminarDetalle= async (req,res)=>{
     }
 
     const subTotalViejo=(detalleFactura.cantidad*detalleFactura.precioUnitario)-detalleFactura.descuento;
+    const ivaViejo=((detalleFactura.cantidad*detalleFactura.precioUnitario)*(detalleFactura.tarifa/100))
     facturaObj.subtotal=facturaObj.subtotal-subTotalViejo;
-    facturaObj.iva= facturaObj.subtotal*0.13;
+    facturaObj.iva= facturaObj.subtotal-ivaViejo;
 
     try{
         facturaObj.save();
