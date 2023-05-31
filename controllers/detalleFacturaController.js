@@ -129,8 +129,27 @@ const eliminarDetalle= async (req,res)=>{
 };
 
 const obtenerEstadisticas = async (req, res) => {
+    const { fechaInicio, fechaFin } = req.query; // Obtenemos las fechas desde los parámetros de consulta
+
+    // Convertimos las fechas a objetos de fecha de JavaScript
+    const fechaInicioDate = new Date(fechaInicio);
+    const fechaFinDate = new Date(fechaFin);
+
+    // Establecemos la hora del inicio del día para la fecha de inicio y la hora del final del día para la fecha de fin
+    fechaInicioDate.setHours(0, 0, 0, 0);
+    fechaFinDate.setHours(23, 59, 59, 999);
+
     try {
         const estadisticas = await DetalleFactura.aggregate([
+            // Filtramos los datos por el rango de fechas
+            {
+                $match: {
+                    createdAt: {
+                        $gte: fechaInicioDate,
+                        $lte: fechaFinDate,
+                    },
+                },
+            },
             { $group: { _id: "$producto", ventas: { $sum: "$cantidad" } } },
             { $lookup: { from: "productos", localField: "_id", foreignField: "_id", as: "producto" } },
             { $unwind: "$producto" },
@@ -144,11 +163,21 @@ const obtenerEstadisticas = async (req, res) => {
     }
 };
 
+const obtenerDetallesFacturas = async (req, res) => {
+    try {
+      const detalles = await DetalleFactura.find();
+      res.json(detalles);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send("Hubo un error al obtener los detalles de facturas.");
+    }
+  };
 
 export{
     agregarDetalle,
     obtenerDetalle,
     actualizarDetalle,
     eliminarDetalle,
-    obtenerEstadisticas
+    obtenerEstadisticas,
+    obtenerDetallesFacturas
 }
