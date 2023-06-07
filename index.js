@@ -11,8 +11,6 @@ import Factura from "./routes/facturaRoutes.js";
 import Producto from "./routes/productoRoutes.js";
 import FacturaPagar from "./routes/facturaPagarRoutes.js";
 
-import { swaggerDocs } from "./routes/swagger.js";
-
 const app = express();
 app.use(express.json());
 
@@ -35,16 +33,16 @@ const corsOptions = {
         }
     },
 };
-// app.use(cors(corsOptions));
+ app.use(cors(corsOptions));
 
 //Routing----------------------------------------------------------------------------------------
 app.use("/api/usuarios", usuarioRoutes); //USE responde a todos los verbos http // req = Datos enviados y res= resppuesta que se obtiene
 app.use("/api/clientes", clienteRoutes);
 app.use("/api/proveedor", proveedorRoutes);
-app.use("/api/detalle_factura", DetalleFactura);
-app.use("/api/facturas", Factura);
-app.use("/api/productos", Producto);
-app.use("/api/facturas-pagar", FacturaPagar);
+app.use("/api/detalle_factura",DetalleFactura);
+app.use("/api/facturas",Factura);
+app.use("/api/productos",Producto);
+app.use("/api/facturas-pagar",FacturaPagar);
 
 //------------------------------------------------------------------------------------------------
 
@@ -52,5 +50,4 @@ const PORT = process.env.PORT || 4000; // variable de entorno para el puerto, si
 
 app.listen(PORT, () => {
     console.log(`Servidor corriendo en el puerto ${PORT}`);
-    swaggerDocs(app, PORT);
 });

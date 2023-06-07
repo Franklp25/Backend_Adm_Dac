@@ -2,6 +2,11 @@ import mongoose from "mongoose";
 
 const facturaSchema = mongoose.Schema(
     {
+        numFacturaCobrar: {
+            type: Number,
+            required: true,
+            unique: true,
+        },
         fechaEmision: {
             type: Date,
             required: true,
@@ -9,11 +14,11 @@ const facturaSchema = mongoose.Schema(
         },
         diasCredito: {
             type: Number,
-            required: true,
+            required: false,
         },
         fechaVencimiento: {
             type: Date,
-            required: true,
+            required: false,
             //default:Date.now,
         },
         iva: {

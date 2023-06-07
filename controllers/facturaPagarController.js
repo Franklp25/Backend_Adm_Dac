@@ -61,8 +61,11 @@ const editarFactura = async (req, res) => {
     facturaPagar.numFacturaPagar = req.body.numFacturaPagar || facturaPagar.numFacturaPagar;
     facturaPagar.fechaEmision = req.body.fechaEmision || facturaPagar.fechaEmision;
     facturaPagar.diasCredito = req.body.diasCredito || facturaPagar.diasCredito;
+    facturaPagar.total = req.body.total || facturaPagar.total;
     facturaPagar.fechaVencimiento = req.body.fechaVencimiento || facturaPagar.fechaVencimiento;
-    facturaPagar.estado = req.body.estado || facturaPagar.estado;
+    if(req.body.estado!=null){
+        facturaPagar.estado = req.body.estado;
+    }
 
     try {
         const facturaPagarAlmacenada = await facturaPagar.save();
