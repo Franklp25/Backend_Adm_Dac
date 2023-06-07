@@ -17,20 +17,36 @@ const agregarDetalle= async (req,res)=> {
 
     }
 
+    console.log(existeFactura);
     if(!precioUnitario || precioUnitario<=0){
         req.body.precioUnitario=existeProducto.precio;
     }
 
-    try {
-        const subTotalAux=(req.body.cantidad*req.body.precioUnitario)-req.body.descuento;
-        existeFactura.subtotal=existeFactura.subtotal+subTotalAux;
-        existeFactura.iva= existeFactura.subtotal*0.13
-        existeFactura.save();
-        const detalleAlmacenado= await DetalleFactura.create(req.body);
-        res.json(detalleAlmacenado);
-    } catch(error){
-        console.log(error);
+    if(existeFactura!=null){
+        try {
+            //recordar realizar la resta del descuento en el futuro
+            const subTotalAux=(req.body.cantidad*req.body.precioUnitario);
+            
+            existeFactura.subtotal=existeFactura.subtotal+subTotalAux;
+            if(req.body.tarifa){
+                existeFactura.iva= (req.body.cantidad*req.body.precioUnitario)*(req.body.tarifa/100)
+            }else{
+                existeFactura.iva= existeFactura.iva+existeFactura.subtotal*0.13
+            }
+            
+            console.log(existeFactura);
+            existeFactura.save();
+            const detalleAlmacenado= await DetalleFactura.create(req.body);
+            res.json(detalleAlmacenado);
+        } catch(error){
+            console.log(error);
+        }
+    }else{
+        const error= new Error("La factura no existe");
+        return res.status(404).json({msg: error.message});
     }
+
+    
 
 };
 
@@ -106,8 +122,9 @@ const eliminarDetalle= async (req,res)=>{
     }
 
     const subTotalViejo=(detalleFactura.cantidad*detalleFactura.precioUnitario)-detalleFactura.descuento;
+    const ivaViejo=((detalleFactura.cantidad*detalleFactura.precioUnitario)*(detalleFactura.tarifa/100))
     facturaObj.subtotal=facturaObj.subtotal-subTotalViejo;
-    facturaObj.iva= facturaObj.subtotal*0.13;
+    facturaObj.iva= facturaObj.subtotal-ivaViejo;
 
     try{
         facturaObj.save();
@@ -118,10 +135,56 @@ const eliminarDetalle= async (req,res)=>{
     }
 };
 
+const obtenerEstadisticas = async (req, res) => {
+    const { fechaInicio, fechaFin } = req.query; // Obtenemos las fechas desde los parámetros de consulta
+
+    // Convertimos las fechas a objetos de fecha de JavaScript
+    const fechaInicioDate = new Date(fechaInicio);
+    const fechaFinDate = new Date(fechaFin);
+
+    // Establecemos la hora del inicio del día para la fecha de inicio y la hora del final del día para la fecha de fin
+    fechaInicioDate.setHours(0, 0, 0, 0);
+    fechaFinDate.setHours(23, 59, 59, 999);
+
+    try {
+        const estadisticas = await DetalleFactura.aggregate([
+            // Filtramos los datos por el rango de fechas
+            {
+                $match: {
+                    createdAt: {
+                        $gte: fechaInicioDate,
+                        $lte: fechaFinDate,
+                    },
+                },
+            },
+            { $group: { _id: "$producto", ventas: { $sum: "$cantidad" } } },
+            { $lookup: { from: "productos", localField: "_id", foreignField: "_id", as: "producto" } },
+            { $unwind: "$producto" },
+            { $project: { nombre: "$producto.nombre", ventas: 1, _id: 0 } }
+        ]);
+
+        res.json(estadisticas);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Hubo un error al obtener las estadísticas de ventas.");
+    }
+};
+
+const obtenerDetallesFacturas = async (req, res) => {
+    try {
+      const detalles = await DetalleFactura.find();
+      res.json(detalles);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send("Hubo un error al obtener los detalles de facturas.");
+    }
+  };
 
 export{
     agregarDetalle,
     obtenerDetalle,
     actualizarDetalle,
     eliminarDetalle,
+    obtenerEstadisticas,
+    obtenerDetallesFacturas
 }

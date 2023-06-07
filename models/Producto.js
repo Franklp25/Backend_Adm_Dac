@@ -1,31 +1,36 @@
 import mongoose from "mongoose";
 
 const productSchema = new mongoose.Schema(
-  {
-    codigo: {
-      type: String,
-      default: "NA",
+    {
+        codigo: {
+            type: String,
+            default: "NA",
+        },
+        nombre: {
+            type: String,
+            required: true,
+        },
+        unidadMedida: {
+            type: String,
+            required: true,
+        },
+        cantidad: {
+            type: Number,
+            required: true,
+            default: 1,
+        },
+        precio: {
+            type: Number,
+            required: true,
+        },
+        descripcion: {
+            type: String,
+            required: true,
+        },
     },
-    nombre: {
-      type: String,
-      required: true,
-    },
-    precio: {
-      type: Number,
-      required: true,
-    },
-    descripcion: {
-      type: String,
-      required: true,
-    },
-    // categoria: {
-    //   type: String,
-    //   required: true,
-    // },
-  },
-  {
-    timestamps: true,
-  }
+    {
+        timestamps: true,
+    }
 );
 
 // Creación del modelo de productos a partir del esquema

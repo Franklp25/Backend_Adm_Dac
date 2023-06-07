@@ -34,7 +34,7 @@ const obtenerProducto = async (req, res) => {
         return res.status(404).json({ msg: error.message });
     }
 
-	res.json(producto);
+    res.json(producto);
 };
 
 const editarProducto = async (req, res) => {
@@ -56,10 +56,10 @@ const editarProducto = async (req, res) => {
 
     producto.codigo = req.body.codigo || producto.codigo;
     producto.nombre = req.body.nombre || producto.nombre;
+    producto.unidadMedida = req.body.unidadMedida || producto.unidadMedida;
+    producto.cantidad = req.body.cantidad || producto.cantidad;
     producto.precio = req.body.precio || producto.precio;
     producto.descripcion = req.body.descripcion || producto.descripcion;
-    producto.categoria = req.body.categoria || producto.categoria;
-
     try {
         const productoAlmacenado = await producto.save();
         res.json(productoAlmacenado);
@@ -69,7 +69,7 @@ const editarProducto = async (req, res) => {
 };
 
 const eliminarProducto = async (req, res) => {
-	const { id } = req.params;
+    const { id } = req.params;
     let producto;
 
     try {
@@ -85,13 +85,12 @@ const eliminarProducto = async (req, res) => {
         return res.status(404).json({ msg: error.message });
     }
 
-	try {
-		await producto.deleteOne();
-		res.json({ msg: "Producto Eliminado"});
-	} catch (error) {
-		console.log(error);
-	}
-
+    try {
+        await producto.deleteOne();
+        res.json({ msg: "Producto Eliminado" });
+    } catch (error) {
+        console.log(error);
+    }
 };
 
 export {

@@ -5,6 +5,7 @@ const facturaPagarSchema = mongoose.Schema(
         numFacturaPagar: {
             type: Number,
             required: true,
+            unique: true,
         },
         proveedor: {
             type: mongoose.Schema.Types.ObjectId,
