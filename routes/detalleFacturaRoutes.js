@@ -6,6 +6,7 @@ import {
     actualizarDetalle,
     eliminarDetalle,
     obtenerEstadisticas,
+    obtenerDetallesFacturas,
 } from "../controllers/detalleFacturaController.js";
 
 import checkAuth from "../middleware/checkAuth.js";
@@ -21,8 +22,12 @@ router
 .put(actualizarDetalle)
 .delete(eliminarDetalle);
 
-router 
+/* router 
 .route("/")
-.get(obtenerEstadisticas)
+.get(obtenerDetallesFacturas) */
+
+ router 
+.route("/")
+.get(obtenerEstadisticas) 
 
 export default router;
