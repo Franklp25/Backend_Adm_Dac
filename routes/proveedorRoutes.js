@@ -14,6 +14,50 @@ const router = express.Router();
 //Esquema de proveedor
 /**
  * @swagger
+ * components:
+ *   schemas:
+ *     Proveedor:
+ *       type: object
+ *       properties:
+ *         tipoCedula:
+ *           type: string
+ *           description: Type of identification document
+ *         cedula:
+ *           type: string
+ *           description: Identification document number
+ *         nombre:
+ *           type: string
+ *           description: Provider's first name
+ *         apellidos:
+ *           type: string
+ *           description: Provider's last name
+ *         telefono:
+ *           type: string
+ *           description: Provider's phone number
+ *         email:
+ *           type: string
+ *           format: email
+ *           description: Provider's email address
+ *         direccion:
+ *           type: string
+ *           description: Provider's address
+ *         estatus:
+ *           type: boolean
+ *           description: Provider's status (active/inactive)
+ *       required:
+ *         - tipoCedula
+ *         - cedula
+ *         - nombre
+ *         - telefono
+ *         - email
+ */
+
+
+
+
+
+/**
+ * @swagger
  * tags:
  *   name: Providers
  *   description: Endpoints for managing providers
