@@ -66,13 +66,18 @@ const editarFactura = async (req, res) => {
     }
 
     factura.fechaEmision = req.body.fechaEmision || factura.fechaEmision;
-    factura.fechaVencimiento =
+    factura.fechaVencimiento =-
         req.body.fechaVencimiento || factura.fechaVencimiento;
-    factura.fechaEmision = req.body.fechaEmision || factura.fechaEmision;
 
-    if(req.body.estado!=null){
+    // Agregar pagos parciales si se proporcionan en el body
+    if (req.body.pagosParciales) {
+        factura.pagosParciales = req.body.pagosParciales;
+    }
+
+    if (req.body.estado != null) {
         factura.estado = req.body.estado;
     }
+
     try {
         const facturaAlmacenada = await factura.save();
         res.json(facturaAlmacenada);
@@ -80,6 +85,7 @@ const editarFactura = async (req, res) => {
         console.log(error);
     }
 };
+
 const eliminarFactura = async (req, res) => {
     const { id } = req.params;
     let factura;

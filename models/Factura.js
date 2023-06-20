@@ -40,6 +40,24 @@ const facturaSchema = mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: "Cliente",
         },
+        detalles: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "Detallefacturas",
+            },
+        ],
+        pagoParciales: [
+            {
+                numero: {
+                    type: Number,
+                    required: false,
+                },
+                fecha: {
+                    type: Date,
+                    required: false,
+                },
+            },
+        ],
     },
     {
         timestamps: true,
