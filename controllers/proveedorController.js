@@ -1,4 +1,5 @@
 import Proveedor from "../models/Proveedor.js";
+import FacturaPagar from "../models/FacturaPagar.js"
 
 const nuevoProveedor = async (req, res) => {
     const proveedor = new Proveedor(req.body);
@@ -88,6 +89,16 @@ const eliminarProveedor = async (req, res) => {
     if (!proveedor) {
         const error = new Error("Proveedor no encontrado");
         return res.status(404).json({ msg: error.message });
+    }
+
+    // Verificar si el cliente está presente en alguna factura
+    const factura = await FacturaPagar.findOne({ proveedor: id });
+
+    if (factura) {
+        const error = new Error(
+            "No se puede eliminar el proveedor, está asociado a una factura"
+        );
+        return res.status(400).json({ msg: error.message });
     }
 
     try {
