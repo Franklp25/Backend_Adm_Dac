@@ -10,7 +10,30 @@ import DetalleFactura from "./routes/detalleFacturaRoutes.js";
 import Factura from "./routes/facturaRoutes.js";
 import Producto from "./routes/productoRoutes.js";
 import FacturaPagar from "./routes/facturaPagarRoutes.js";
+import path from "path";
+import { fileURLToPath } from "url";
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+//Swagger
+import swaggerUI from "swagger-ui-express";
+import swaggerJSDoc from "swagger-jsdoc";
+const swaggerSpec = {
+    definition: {
+        openapi: "3.0.0",
+        info: {
+            title: "Node MongoDB API",
+            version: "1.0.0",
+        },
+        servers: [
+            {
+                url: "http://localhost:4000",
+            },
+        ],
+    },
+    apis: [`${path.join(__dirname, "./routes/*.js")}`],
+};
 const app = express();
 app.use(express.json());
 
@@ -34,7 +57,11 @@ const corsOptions = {
     },
 };
 app.use(cors(corsOptions));
-
+app.use(
+    "/api-doc",
+    swaggerUI.serve,
+    swaggerUI.setup(swaggerJSDoc(swaggerSpec))
+);
 //Routing----------------------------------------------------------------------------------------
 app.use("/api/usuarios", usuarioRoutes); //USE responde a todos los verbos http // req = Datos enviados y res= resppuesta que se obtiene
 app.use("/api/clientes", clienteRoutes);
