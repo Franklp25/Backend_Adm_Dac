@@ -48,12 +48,16 @@ const facturaSchema = mongoose.Schema(
         ],
         pagoParciales: [
             {
-                numero: {
+                numComprobante: {
                     type: Number,
                     required: false,
                 },
                 fecha: {
                     type: Date,
+                    required: false,
+                },
+                monto: {
+                    type: Number,
                     required: false,
                 },
             },
