@@ -31,6 +31,7 @@ const clienteSchema = mongoose.Schema(
             type: String,
             required: true,
             trim: true,
+            unique: true, // Campo único
         },
         direccion: {
             type: String,
