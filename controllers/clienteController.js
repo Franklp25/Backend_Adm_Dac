@@ -2,22 +2,32 @@ import Cliente from "../models/Cliente.js";
 import Factura from "../models/Factura.js";
 
 const nuevoCliente = async (req, res) => {
-    const cliente = new Cliente(req.body);
+    const { cedula, email } = req.body; // Extraemos cedula y correo electrónico.
 
-    const { cedula } = req.body; //extraemos cedula.
-    const existeCliente = await Cliente.findOne({ cedula });
-
-    if (existeCliente) {
-        const error = new Error("Cliente ya registrado");
-        return res.status(400).json({ msg: error.message });
-    }
     try {
+        const existeClienteCedula = await Cliente.findOne({ cedula });
+        if (existeClienteCedula) {
+            const error = new Error(
+                "Cliente con la misma cédula ya registrado"
+            );
+            return res.status(400).json({ msg: error.message });
+        }
+
+        const existeClienteEmail = await Cliente.findOne({ email });
+        if (existeClienteEmail) {
+            const error = new Error(
+                "Cliente con el mismo correo electrónico ya registrado"
+            );
+            return res.status(400).json({ msg: error.message });
+        }
+
+        const cliente = new Cliente(req.body);
         const clienteAlmacenado = await cliente.save();
         res.json({ msg: "Se ha almacenado el cliente correctamente" });
-    } catch (e) {
-        //console.log(error);
-        const error = new Error("Hubo un error inesperado al crear el cliente"); //Mensaje de error
-        res.status(500).json({ msg: error.message });
+    } catch (error) {
+        console.log(error);
+        const errorMessage = "Hubo un error inesperado al crear el cliente"; // Mensaje de error
+        res.status(500).json({ msg: errorMessage });
     }
 };
 
