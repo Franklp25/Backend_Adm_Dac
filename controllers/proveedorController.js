@@ -1,23 +1,33 @@
 import Proveedor from "../models/Proveedor.js";
-import FacturaPagar from "../models/FacturaPagar.js"
+import FacturaPagar from "../models/FacturaPagar.js";
 
 const nuevoProveedor = async (req, res) => {
-    const proveedor = new Proveedor(req.body);
-
-    const { cedula } = req.body; //extraemos cedula.
-    const existeProveedor = await Proveedor.findOne({ cedula });
-
-    if (existeProveedor) {
-        const error = new Error("Proveedor ya registrado");
-        return res.status(400).json({ msg: error.message });
-    }
+    const { cedula, email } = req.body; // Extraemos cedula y correo electrónico.
 
     try {
+        const existeProveedorCedula = await Proveedor.findOne({ cedula });
+        if (existeProveedorCedula) {
+            const error = new Error(
+                "Proveedor con la misma cédula ya registrado"
+            );
+            return res.status(400).json({ msg: error.message });
+        }
+
+        const existeProveedorEmail = await Proveedor.findOne({ email });
+        if (existeProveedorEmail) {
+            const error = new Error(
+                "Proveedor con el mismo correo electrónico ya registrado"
+            );
+            return res.status(400).json({ msg: error.message });
+        }
+
+        const proveedor = new Proveedor(req.body);
         const proveedorAlmacenado = await proveedor.save();
         res.json(proveedorAlmacenado);
-    } catch (e) {
-        const error = new Error("Hubo un error inesperado al crear el proveedor");//Mensaje de error
-        res.status(500).json({msg: error.message})
+    } catch (error) {
+        console.log(error);
+        const errorMessage = "Hubo un error inesperado al crear el proveedor"; // Mensaje de error
+        res.status(500).json({ msg: errorMessage });
     }
 };
 
