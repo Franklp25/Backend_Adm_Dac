@@ -8,13 +8,25 @@ const obtenerFacturas = async (req, res) => {
 };
 
 const nuevaFactura = async (req, res) => {
-    const factura = new Factura(req.body);
+    const { numFacturaCobrar } = req.body;
 
     try {
+        // Verificar si el número de factura ya existe en la base de datos
+        const facturaExistente = await Factura.findOne({ numFacturaCobrar });
+        if (facturaExistente) {
+            const error = new Error(
+                "El número de factura ya existe."
+            );
+            return res.status(400).json({ msg: error.message });
+        }
+
+        const factura = new Factura(req.body);
         const facturaAlmacenada = await factura.save();
         res.json(facturaAlmacenada);
     } catch (error) {
         console.log(error);
+        const errorMessage = "Hubo un error inesperado al crear la factura"; // Mensaje de error
+        res.status(500).json({ msg: errorMessage });
     }
 };
 
