@@ -36,6 +36,11 @@ const facturaSchema = mongoose.Schema(
             required: true,
             default: false,
         },
+        anulada: {
+            type: Boolean,
+            required: false,
+            default: false,
+        },
         cliente: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "Cliente",

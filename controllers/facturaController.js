@@ -66,16 +66,20 @@ const editarFactura = async (req, res) => {
     }
 
     factura.fechaEmision = req.body.fechaEmision || factura.fechaEmision;
-    factura.fechaVencimiento =-
+    factura.fechaVencimiento =
         req.body.fechaVencimiento || factura.fechaVencimiento;
 
     // Agregar pagos parciales si se proporcionan en el body
     if (req.body.pagosParciales) {
-        factura.pagosParciales = req.body.pagosParciales;
+        factura.pagoParciales = req.body.pagosParciales;
     }
 
     if (req.body.estado != null) {
         factura.estado = req.body.estado;
+    }
+
+    if (req.body.anulada != null) {
+        factura.anulada = req.body.anulada;
     }
 
     try {
